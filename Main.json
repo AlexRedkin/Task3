@@ -1,0 +1,37 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+   "parameters": {
+    "StorageName": {
+      "type": "string",
+      "defaultValue": "testrgstorage01"
+    },
+     "StorageType": {
+      "type": "string",
+      "defaultValue": "Standard_LRS"
+    }
+  },
+    "variables": {
+    "storageUrl": "https://mystorageaccount.blob.core.windows.net/AzureTemplates/newStorageAccount.json"
+},
+  "resources": [
+    {
+        "apiVersion": "2017-05-10",
+        "name": "linkedTemplate",
+        "type": "Microsoft.Resources/deployments",
+        "properties": {
+        "mode": "incremental",
+        "templateLink": {
+            "uri":"[variables('storageUrl')]",
+            "contentVersion":"1.0.0.0"
+        },
+       "parameters": {
+          "StorageAccountName":{"value": "[parameters('StorageName')]"},
+          "storageAccountType":{"value": "[parameters('StorageType')]"}
+        }
+        }
+    }
+ ]
+}
+
+
